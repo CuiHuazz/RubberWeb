@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RubberWeb</title>
+    <link id="headAndFoot" rel="stylesheet" href="./css/main.css"/>
+</head>
+<body>
+    <header>
+        <div>
+            <img class="logo" src="./img/logo.jpg"/>
+            <img class="menu" src="./img/menu.png"/>
+            <ul>
+                <li> <a id="index" class="is-active">首页</a> </li>
+                <li> <a id="one">页面一</a> </li>
+                <li> <a id="two">页面二</a> </li>
+                <li> <a id="three">页面三</a> </li>
+            </ul>
+        </div>
+    </header>
+    <main></main>
+    <footer>
+        <div>
+            <div class="text">
+                <a href="#">最新动态</a>
+                <div class="line"></div>
+                <a href="#">加入我们</a>
+                <div class="line"></div>
+                <a href="#">XXXX</a>
+                <div class="line"></div>
+                <a href="#">用户使用协议</a>
+            </div>
+            <br/>
+            <div style="padding-left: 15px;">Copy © 2020 XXXXX ICP备XXXXXX号</div>
+        </div>
+    </footer>
+</body>
+<script src="./js/jquery.js"></script>
+<script>
+    var header_min_width = $("header>div>ul").width()+$("header>div>img").width()+63;
+    //引入主体部分
+    $("main").load("./main.html");
+    $(function(){
+        //初始化导航栏样式
+        windowResize();
+        //导航栏a标签点击事件=>点击切换main标签的html
+        $("header>div>ul>li>a").on("click",function(){
+            var id = $(this).attr('id');
+            if($(".menu").css("display")=="block"){
+                $(".menu").attr('src','./img/menu.png');
+                $("header>div>ul").slideUp(0);
+                $(".menu").css({
+                    'width':'auto',
+                    'height':'100%',
+                    'margin':'0 0'
+                });
+            }
+            $("main").empty();
+            $("main").load(id+".html");
+            $(this).addClass("is-active").parent().siblings().children("a").removeClass("is-active");
+        })
+
+        //当浏览器宽度小于导航栏所需宽度时=>出现缩略图 点击下拉展示导航菜单
+        $(".menu").on("click",function(){
+            if($(this).siblings('ul').css("display")=="none"){
+                $(this).siblings('ul').slideDown(280);
+                $(this).attr('src','./img/close.png');
+                $(this).css({
+                    'width':'28px',
+                    'height':'28px',
+                    'margin':'7px 7px 0 0'
+                });
+
+            }else{
+                $(this).siblings('ul').slideUp(280);
+                $(this).attr('src','./img/menu.png');
+                $(this).css({
+                    'width':'auto',
+                    'height':'100%',
+                    'margin':'0 0'
+                });
+            }
+        })
+        //当浏览器大小变化时=>修改导航栏样式
+        $(window).resize(function () { 
+            windowResize();
+        });
+    })
+    function windowResize(){
+        //导航栏宽度设置
+        $("header>div").css("width",header_min_width+"px");
+        if($(window).width()*0.9<header_min_width){
+            $("header>div").css("padding","0");
+            if($(window).width()<header_min_width){
+                $("header>div").css("width","100%");
+                $("#headAndFoot").attr("href","./css/minMain.css");
+            }
+        }else{
+            $("header>div").css("padding-left","10%");
+            $("#headAndFoot").attr("href","./css/main.css");
+        }
+    }
+</script>
+</html>
